@@ -1,0 +1,64 @@
+#include "FastSPI_LED2.h"
+
+#define trunk_size 20
+CRGB pixelBuffer[trunk_size];
+
+void setup() {
+  //defines pixel strip, RGB order (GRB in this case) and # of LEDs (20)
+  FastLED.addLeds<LPD8806,GRB>( pixelBuffer, trunk_size );
+  FastLED.setBrightness( 128); 
+  
+  Serial.begin(19200);
+}
+
+byte i = 0;
+short direction = 1;
+byte trunk_stop = trunk_size - 1;
+byte trunk_start = 0;
+word bright_color = 0x0000FF;
+word dim_color = 0x1F0000;
+word off_color = 0x000000;
+word delay_ms = 200;
+
+void loop()
+{
+    if( i >= trunk_stop) { 
+      direction = -1;
+    }
+    if (i <= trunk_start) {
+      direction = 1;
+    }
+    i = i + direction;
+
+    //set dot to bright
+    pixelBuffer[i] = bright_color;
+  
+    //set next dot to dim if moving down trunk
+    if ((i < trunk_stop) and (direction < 0)) {
+      pixelBuffer[i + 1] = dim_color;
+    }
+   
+    //set previous dot to dim if moving up trunk 
+    if ((i > trunk_start) and (direction > 0)) {
+      pixelBuffer[i -1] = 0x1F0000;
+    }
+  
+    //Debug to serial
+    Serial.print("i: ");
+    Serial.print(i);
+    Serial.print("; direction: ");
+    Serial.print(direction);
+    Serial.println("");
+    
+    FastLED.show();
+    pixelBuffer[i] = off_color;
+    if (i < trunk_stop) {
+      pixelBuffer[i + 1] = off_color;
+    }
+    if (i > 0) {
+      pixelBuffer[i - 1] = off_color;
+    }
+    
+    //in milliseconds
+    delay(delay_ms);
+}

@@ -1,0 +1,59 @@
+#include "FastSPI_LED2.h"
+
+CRGB pixelBuffer[20];
+
+byte trunk_size = 20;
+
+void setup() {
+  //defines pixel strip, RGB order (GRB in this case) and # of LEDs (20)
+  FastLED.addLeds<LPD8806,GRB>( pixelBuffer, trunk_size );
+  FastLED.setBrightness( 128); 
+  
+  Serial.begin(19200);
+}
+
+byte i = 0;
+byte direction = 1;
+byte trunk_stop = trunk_size - 1;
+byte trunk_start = 0;
+
+void loop()
+{
+    if( i >= trunk_stop) { 
+      direction = -1;
+    }
+    if (i <= trunk_start) {
+      direction = 1;
+    }
+    i = i + direction;
+
+    //set dot to bright red
+    pixelBuffer[i] = 0xFF0000;
+  
+    //set next dot to dim red if moving down trunk
+    if ((i < trunk_stop) and (direction < 0)) {
+      //pixelBuffer[i + 2] = 0x1F0000;
+      //pixelBuffer[i + 2] = 0x001F00;
+    }
+   
+    //set previous dot to dim red if moving up trunk 
+    if ((i > trunk_start) and (direction > 0)) {
+      pixelBuffer[i -1] = 0x1F0000;
+      pixelBuffer[i -1] = 0x001F00;
+    }
+  
+    //Can't figure out how to string concatinated with byte to screen
+    Serial.println(i);
+    
+    FastLED.show();
+    pixelBuffer[i] = 0x000000;
+    if (i < trunk_stop) {
+      pixelBuffer[i + 1] = 0x00000;
+    }
+    if (i > 0) {
+      pixelBuffer[i - 1] = 0x00000;
+    }
+    
+    //in milliseconds
+    delay(200);
+}

@@ -1,0 +1,41 @@
+#include "FastSPI_LED2.h"
+
+CRGB pixelBuffer[20];
+
+void setup() {
+  //defines pixel strip, RGB order (GRB in this case) and # of LEDs (20)
+  FastLED.addLeds<LPD8806,GRB>( pixelBuffer, 20 );
+  FastLED.setBrightness( 128); 
+  
+  Serial.begin(19200);
+}
+
+byte i = 0;
+byte direction = 1;
+
+void loop()
+{
+    if( i >= 20) { 
+      direction = -1;
+    }
+    if (i <= 1) {
+      direction = 1;
+    }
+    i = i + direction;
+
+    if ((i%2) > 0) {
+      pixelBuffer[i] = 0x0000FF;
+    }
+    else {
+      pixelBuffer[i] = 0xFF0000;
+    }
+  
+    //Can't figure out how to output to screen
+    Serial.println(i);
+    
+    FastLED.show();
+    pixelBuffer[i] = 0x000000;
+    
+    //in milliseconds
+    delay(100);
+}

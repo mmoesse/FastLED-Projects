@@ -1,0 +1,39 @@
+Arduino Nano v3
+4-pin
+register: data (green), clock (yellow)
+ex. 7,6
+
+Arduino Uno
+3-pin (2 grounds)
+Blue: data (usually pin 3)
+Black x2: ground
+Red: 5v
+
+All arduinos are good for up to 300-400 LEDs
+Mega is good for >600 LEDs
+
+Arduino Nano 3.x = Arduino Nano w/ ATmega328
+
+Small chipsets
+http://www.pjrc.com/
+Teensy 3.1 (lower voltage, needs OctoWS2811 Adaptor, can power a lot of LEDs)
+Beetle SKU:DFR0282 (tiny Arduino Leonardo)
+Bluno Beetle SKU:DFR0339 (tiny Arduino Uno with Bluetooth)
+
+Window: 8' 9" x 7' 10" : 293"
+4 LEDs = 14.5"
+1 LED = 3.625"
+81 LEDs
+
+Power consumption:
+these LEDs draw no where near their spec for amps in the real world.  I had 82 62 mA LEDs run at full brightness off 3 AA alkaline for almost 5 hours.  At 62 mA, they should have been dead after 23 min.
+
+Xmas style lights running demo reel on full brightness lasted 13+ times longer then advertised.
+
+Module lights wiring
+Red: 5V
+Yellow: Ground
+Green: Data
+Blue: Clock
+
+Need power connection every meter or 25 LEDs
