@@ -23,11 +23,12 @@
 //#define NUM_LEDS    150
 #define NUM_LEDS    100
 //#define NUM_LEDS    20
+#define PATTERN_DELAY_SEC 900
 CRGB leds[NUM_LEDS];
  
 #define BRIGHTNESS          255
 //#define FRAMES_PER_SECOND  120
-#define FRAMES_PER_SECOND  24
+#define FRAMES_PER_SECOND  6
  
 void setup() {
   delay(3000); // 3 second delay for recovery
@@ -44,7 +45,8 @@ void setup() {
 // List of patterns to cycle through.  Each is defined as a separate function below.
 typedef void (*SimplePatternList[])();
 //SimplePatternList gPatterns = { rainbow, rainbowWithGlitter, confetti, sinelon, juggle, bpm };
-SimplePatternList gPatterns = { rainbow, rainbowWithGlitter, confetti, sinelon, juggle };
+SimplePatternList gPatterns = { rainbow, sinelon };
+//SimplePatternList gPatterns = { sinelon };
  
 uint8_t gCurrentPatternNumber = 0; // Index number of which pattern is current
 //try a blue/green color base?
@@ -62,7 +64,7 @@ void loop()
  
   // do some periodic updates
   EVERY_N_MILLISECONDS( 20 ) { gHue++; } // slowly cycle the "base color" through the rainbow
-  EVERY_N_SECONDS( 10 ) { nextPattern(); } // change patterns periodically
+  EVERY_N_SECONDS( PATTERN_DELAY_SEC ) { nextPattern(); } // change patterns periodically
 }
  
 #define ARRAY_SIZE(A) (sizeof(A) / sizeof((A)[0]))
